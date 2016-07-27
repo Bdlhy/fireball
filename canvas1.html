@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#main{
+			margin: 50px;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="main" width="800" height="400"></canvas>
+	<script>
+		window.creatCanvas = (function(){
+			var canvas, ct;
+			function init(){
+				canvas = document.getElementById('main');
+				console.log(canvas);
+				ct = canvas.getContext("2d");
+
+				// //填充
+				// ct.fillStyle = 'rgba(255,0,0,0.5)';
+				// ct.strokeStyle = 'blue';
+				// ct.fillRect(0,0,100,100);
+				// ct.strokeRect(150,0,100,100);
+
+				// ct.clearRect(50, 50, 150, 50); //清除
+
+				// // 画圆
+				// ct.beginPath();
+				// ct.arc(50, 150, 50, 0, Math.PI * 2, true);
+				// ct.closePath();
+				// ct.fillStyle = 'rgba(0,255,0,0.25)';
+				// ct.fill();
+
+				// //开始与闭合比较
+				// //左侧1/4圆弧
+				// ct.beginPath();
+				// ct.arc(100, 250, 50, 0, Math.PI/2 , false);
+				// ct.fillStyle = 'rgba(255,0,0,0.25)';
+				// ct.fill();
+				// ct.strokeStyle = 'rgba(255,0,0,0.25)';
+				// ct.closePath();
+				// ct.stroke();
+
+				// //右侧1/4圆弧
+				// ct.beginPath();
+				// ct.arc(300, 250, 50, 0, Math.PI/2 , false);
+				// ct.fillStyle = 'rgba(255,0,0,0.25)';
+				// ct.fill();
+				// ct.strokeStyle = 'rgba(255,0,0,0.25)';
+				// ct.closePath();
+				// ct.stroke();
+
+				// // 万花筒
+				// var dx = 150;
+				// var dy = 150;
+				// var s = 100;
+				// ct.beginPath();
+				// ct.fillStyle = 'rgb(100,255,100)';
+				// ct.strokeStyle = 'rgb(0,0,100)';
+				// var x = Math.sin(0);
+				// var y = Math.cos(0);
+				// var dig = Math.PI / 15 * 11;
+				// for (var i = 0; i < 30; i++) {
+				// var x = Math.sin(i * dig);
+				// var y = Math.cos(i * dig);
+				// ct.lineTo(dx + x * s, dy + y * s);
+				// }
+				// ct.closePath();
+				// ct.fill();
+				// ct.stroke();
+				// 
+				// // 贝塞尔曲线&二次样条曲线
+				// ct.moveTo(50,50);
+				// ct.bezierCurveTo(50, 100, 100, 50, 150, 150);
+				// ct.stroke();
+				// ct.quadraticCurveTo(150, 250, 250, 250);
+				// ct.stroke();
+				// 
+				// // 线性渐变
+				// var color1 = ct.createLinearGradient(0,0,50,150);
+				// color1.addColorStop(0, 'rgb(255,0,0)');
+				// color1.addColorStop(0.5, 'rgb(0,255,0)');
+				// color1.addColorStop(1, 'rgb(0,0,255)');
+
+				// ct.fillStyle = color1;
+				// ct.fillRect(0,0,300,300);
+				// 
+				// // 径向渐变
+				// var color2 = ct.createRadialGradient(200, 150, 0, 250, 150, 100);
+				// color2.addColorStop(0.6, 'rgb(255,255,255)');
+				// color2.addColorStop(1, 'rgb(0,0,0)');
+				// ct.fillStyle = color2;
+				// ct.beginPath();
+				// ct.arc(200, 150, 100, 0, Math.PI * 2, true);
+				// ct.closePath();
+				// ct.fill();
+				// 
+				// var color3 = ct.createRadialGradient(100, 150, 10, 300, 150, 50);
+				// color3.addColorStop(0.1, 'rgb(255,0,0)');
+				// color3.addColorStop(0.5, 'rgb(0,255,0)');
+				// color3.addColorStop(1,'rgb(0,0,255)');
+				// ct.fillStyle = color3;
+				// ct.fillRect(0,0,600,500);
+				// 
+				// // 重叠变换
+				// var opt = ["source-over","destination-over","source-in","destination-in","source-out","destination-out","source-atop","destination-atop","lighter","xor","copy"];
+				// var i = 0;
+				// var inter = setInterval(function(){
+				// 	if( i >= 10){
+				// 		i = 0;
+				// 	}else {
+				// 		ct.fillStyle = 'rgb(0,0,255)';
+				// 		ct.fillRect(0,0,150,150);
+				// 		ct.globalCompositeOperation = opt[i++];
+				// 		ct.beginPath();
+				// 		ct.fillStyle = 'red';
+				// 		ct.arc(150,150,100,0,Math.PI * 2,true);
+				// 		ct.fill();
+				// 		ct.closePath();
+				// 	}
+				// }, 1000);
+				// 
+				// // 动画
+				var rect = {
+					startX: 0,
+					startY: 0,
+					width: 20,
+					height: 20,
+					radius: 10,
+					maxW: 500,
+					maxH: 300,
+					moveRight: 0,//0右移,1左移
+					moveDown: 0,//0下移,1上移
+					move: 1//移动单位长
+				}
+				var inter = setInterval(function(){
+					move(rect);
+				},1);
+				function move(rect){
+					ct.clearRect(0, 0, rect.maxW ,rect.maxH);
+					ct.fillStyle = 'rgba(0,0,255,0.3)';
+					ct.fillRect(0, 0, rect.maxW, rect.maxH);
+					ct.beginPath();
+					ct.fillStyle = '#f73';
+					//ct.fillRect(rect.startX, rect.startY, rect.width, rect.height);
+					ct.arc(rect.startX + rect.radius, rect.startY + rect.radius, rect.radius, 0, Math.PI * 2, true);
+					ct.fill();
+					ct.closePath();
+					if(rect.moveRight == 0){
+						rect.startX += rect.move;
+						if(rect.startX >= rect.maxW - rect.width){
+							rect.moveRight = 1;
+						}
+					}else {
+						rect.startX -= rect.move;
+						if(rect.startX <= 0){
+							rect.moveRight = 0;
+						}
+					}
+					if(rect.moveDown == 0){
+						rect.startY += rect.move;
+						if(rect.startY >= (rect.maxH - rect.height)){
+							rect.moveDown = 1;
+						}
+					}else {
+						rect.startY -= rect.move;
+						if(rect.startY <= 0){
+							rect.moveDown = 0;
+						}
+					}
+				}
+
+			}
+			return {
+				'init' : init
+			}
+		})();
+
+		creatCanvas.init();
+
+	</script>
+</body>
+</html>
